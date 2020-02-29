@@ -1,5 +1,5 @@
 /**
- * E S P 3 2    —    D F R O B O T    A N A L O G    S O U N D    L E V E L    M E T E R
+ * E S P 3 2    —    D F R O B O T    A N A L O G    S O U N D    L E V E L    M E T E R
  *
  * Copyright (C) 2019  Nicolas Jeanmonod, ouilogique.com
  *
