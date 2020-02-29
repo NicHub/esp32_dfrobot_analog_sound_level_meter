@@ -20,3 +20,22 @@
 | green |  Analog output  |
 | red   | VCC (3.3V - 5V) |
 | black |       GND       |
+
+
+# Upload data directory to SPIFS
+
+```bash
+platformio run --target uploadfs
+```
+
+
+
+STATION IP address:
+http://192.168.43.199/
+
+SOFT-AP IP address:
+http://192.168.4.1/
+
+
+
+https://plot.ly/javascript/streaming/
