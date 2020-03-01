@@ -36,16 +36,28 @@ void setup()
  */
 void loop()
 {
+    // Reduce the reading rate.
+    static unsigned long targetT = 0UL;
+    unsigned long currentT = millis();
+    if (currentT < targetT)
+        return;
+    targetT = currentT + wait_ms;
+
+    // Web.
+    ArduinoOTA.handle();
+
     // Read sound level.
     sm1.readSoundLevel();
-    static char jsonMsg[100];
+    static char jsonMsg[200];
     sm1.toJSON(jsonMsg);
 
     // Print to serial.
 #define serial_out 1
 #if serial_out == 0
-    Serial.println(jsonMsg);
+    // Do not print to serial.
 #elif serial_out == 1
+    Serial.println(jsonMsg);
+#elif serial_out == 2
     serialPrintForPlotInArduinoPlotter();
 #endif
 
@@ -54,7 +66,4 @@ void loop()
 
     // Send to websocket.
     wsPrint(jsonMsg);
-
-    // Wait.
-    delay(wait_ms);
 }

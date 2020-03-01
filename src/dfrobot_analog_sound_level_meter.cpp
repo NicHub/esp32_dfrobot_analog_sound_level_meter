@@ -112,10 +112,10 @@ void Sound_Meter::calcLowPass2()
 {
     // Low pass 2.
     const float LPF_Beta = 0.1;
-    dbValueLowPass2 = dbValueLowPass2 - (LPF_Beta * (dbValueLowPass2 - dbValue));
+    Sound_Meter::dbValueLowPass2 = Sound_Meter::dbValueLowPass2 - (LPF_Beta * (Sound_Meter::dbValueLowPass2 - Sound_Meter::dbValue));
 
     // Store last dbValue.
-    lastdbValue = dbValue;
+    Sound_Meter::lastdbValue = Sound_Meter::dbValue;
 }
 
 /**
@@ -163,7 +163,7 @@ void Sound_Meter::setupSoundMeter(
     Sound_Meter::analogReadValueMin = Sound_Meter::max_reading_val;
 
     // TODO
-    // Calculate movingAverageSize
+    // Calculate movingAverageSize. Currently it is fixed.
     // movingAverageSize = integrationTime_ms / wait_ms;
 
     // Analog setup.
@@ -190,8 +190,53 @@ void Sound_Meter::toJSON(char *jsonMsg)
 
     sprintf(jsonMsg,
             formatString,
-            dbValue,
-            dbValueAveraged,
-            dbValueLowPass1,
-            dbValueLowPass2);
+            Sound_Meter::dbValue,
+            Sound_Meter::dbValueAveraged,
+            Sound_Meter::dbValueLowPass1,
+            Sound_Meter::dbValueLowPass2);
 }
+
+// /**
+//  *
+//  */
+// void Sound_Meter::toJSON(char *jsonMsg)
+// {
+//     const char *formatString =
+//         R"rawText({"dbValue":%f,"dbValueAveraged":%f})rawText";
+
+//     sprintf(jsonMsg,
+//             formatString,
+//             Sound_Meter::dbValue,
+//             Sound_Meter::dbValueAveraged);
+// }
+
+// /**
+//  *
+//  */
+// void Sound_Meter::toJSON(char *jsonMsg)
+// {
+//     const char *formatString =
+//         R"rawText({"dbValue":%f,"dbValueAveraged":%f,"dbValueLowPass1":%f})rawText";
+
+//     sprintf(jsonMsg,
+//             formatString,
+//             Sound_Meter::dbValue,
+//             Sound_Meter::dbValueAveraged,
+//             Sound_Meter::dbValueLowPass1);
+// }
+
+
+// /**
+//  *
+//  */
+// void Sound_Meter::toJSON(char *jsonMsg)
+// {
+//     const char *formatString =
+//         R"rawText({"dbValue":%f,"dbValueAveraged":%f,"dbValueLowPass2":%f})rawText";
+
+//     sprintf(jsonMsg,
+//             formatString,
+//             Sound_Meter::dbValue,
+//             Sound_Meter::dbValueAveraged,
+//             Sound_Meter::dbValueLowPass2);
+// }

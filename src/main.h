@@ -25,7 +25,7 @@
 // Sound meter.
 #include <dfrobot_analog_sound_level_meter.h>
 Sound_Meter sm1;
-const uint16_t wait_ms = 100;
+const unsigned long wait_ms = 100UL;
 #define SOUND_SENSOR_PIN 34 // This pin read the analog voltage from the sound level meter.
 
 // OLED.
@@ -80,12 +80,12 @@ void serialPrintForPlotInArduinoPlotter()
  */
 void printOLED()
 {
-    // Reduce the display rate.
-    static int lastT = millis();
-    int currentT = millis();
-    if (currentT - lastT < 250)
+    // Reduce the printing rate.
+    static unsigned long targetT = 0UL;
+    unsigned long currentT = millis();
+    if (currentT < targetT)
         return;
-    lastT = currentT;
+    targetT = currentT + 500UL;
 
     // Print.
     display.setCursor(25, 8);
