@@ -13,15 +13,53 @@ var infoPanel = document.getElementById("infoPanel");
 }
 
 function createPlot() {
-    Plotly.newPlot('dbGraph', [{
+
+    var layout = {
+        yaxis: {
+            range: [0, 100],
+            tickmode: "linear",
+            tick0: 0,
+            dtick: 20
+        }
+    };
+
+    var config = { responsive: true };
+
+    var traces = [{
+        y: [],
+        mode: 'lines+markers',
+        opacity: 0.5,
+        marker: { color: 'orangered', size: 8 },
+        name: 'sound level (dB)',
+        line: { width: 4 }
+    },
+    {
+        y: [],
+        mode: 'lines+markers',
+        opacity: 0.5,
+        marker: { color: 'mediumseagreen', size: 8 },
+        name: 'sound level averaged (dB)',
+        line: { width: 4 }
+    },
+    {
         y: [],
         mode: 'lines',
-        line: { color: '#80CAF6' }
-    }, {
+        opacity: 1.0,
+        marker: { color: 'dodgerblue', size: 4 },
+        name: 'sound level low pass 1 (dB)',
+        line: { width: 1 }
+    },
+    {
         y: [],
         mode: 'lines',
-        line: { color: '#000000' }
-    }]);
+        opacity: 1.0,
+        marker: { color: 'black', size: 4 },
+        name: 'sound level low pass 2 (dB)',
+        line: { width: 1 }
+    },
+    ];
+
+    Plotly.newPlot('dbGraph', traces, layout, config);
 }
 
 function getIP(callback) {
@@ -75,12 +113,13 @@ function webSocketHandle(ip) {
 
         var data = JSON.parse(evt.data);
         infoPanel.innerHTML = "<pre>" + evt.data + "</pre><pre>Refresh rate = "
-            + refreshRate.toFixed() + " Hz (ΔT = " + deltaTms.toFixed() + " ms | ΔTmax = " + deltaTmax + "ms)</pre>";
+            + refreshRate.toFixed().padStart(2, " ") + " Hz (ΔT = " + deltaTms.toFixed().padStart(3, " ") + " ms | ΔTmax = " + deltaTmax.toFixed().padStart(3, " ") + "ms)</pre>";
 
         if (data.hasOwnProperty("dbValue")) {
+            let maxPoints = 100;
             Plotly.extendTraces('dbGraph', {
-                y: [[data.dbValue], [data.dbValueAveraged]]
-            }, [0, 1])
+                y: [[data.dbValue], [data.dbValueAveraged], [data.dbValueLowPass1], [data.dbValueLowPass2]]
+            }, [0, 1, 2, 3], maxPoints);
         }
     };
 
@@ -88,6 +127,3 @@ function webSocketHandle(ip) {
         infoPanel.innerHTML = "<pre>WebSocket connection is closed</pre>";
     };
 }
-
-
-
