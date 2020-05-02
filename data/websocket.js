@@ -27,39 +27,47 @@ function createPlot() {
 
     var traces = [{
         y: [],
-        mode: 'lines+markers',
+        mode: "lines+markers",
         opacity: 0.5,
-        marker: { color: 'orangered', size: 8 },
-        name: 'sound level (dB)',
+        marker: { color: "orangered", size: 8 },
+        name: "RAW SOUND LEVEL (dB)",
         line: { width: 4 }
     },
     {
         y: [],
-        mode: 'lines+markers',
+        mode: "lines+markers",
         opacity: 0.5,
-        marker: { color: 'mediumseagreen', size: 8 },
-        name: 'sound level averaged (dB)',
+        marker: { color: "mediumseagreen", size: 8 },
+        name: "AVERAGED SOUND LEVEL (dB)",
         line: { width: 4 }
     },
     {
         y: [],
-        mode: 'lines',
+        mode: "lines",
         opacity: 1.0,
-        marker: { color: 'dodgerblue', size: 4 },
-        name: 'sound level low pass 1 (dB)',
+        marker: { color: "dodgerblue", size: 4 },
+        name: "LOW PASS 1 SOUND LEVEL (dB)",
         line: { width: 1 }
     },
     {
         y: [],
-        mode: 'lines',
+        mode: "lines",
         opacity: 1.0,
-        marker: { color: 'black', size: 4 },
-        name: 'sound level low pass 2 (dB)',
+        marker: { color: "black", size: 4 },
+        name: "LOW PASS 2 SOUND LEVEL (dB)",
+        line: { width: 1 }
+    },
+    {
+        y: [],
+        mode: "lines",
+        opacity: 1.0,
+        marker: { color: "green", size: 4 },
+        name: "KALMAN FILTERED SOUND LEVEL (dB)",
         line: { width: 1 }
     },
     ];
 
-    Plotly.newPlot('dbGraph', traces, layout, config);
+    Plotly.newPlot("dbGraph", traces, layout, config);
 }
 
 function getIP(callback) {
@@ -84,8 +92,7 @@ function getIP(callback) {
         else {
             // We are on the development server.
             // Manually set ESP IP address.
-            // ip = "192.168.1.113";
-            ip = "192.168.43.199";
+            ip = "192.168.88.253";
             document.title = "DEV[" + ans + "]—" + document.title;
         }
         console.log("ip = " + ip);
@@ -112,14 +119,23 @@ function webSocketHandle(ip) {
         T1 = T2;
 
         var data = JSON.parse(evt.data);
-        infoPanel.innerHTML = "<pre>" + evt.data + "</pre><pre>Refresh rate = "
-            + refreshRate.toFixed().padStart(2, " ") + " Hz (ΔT = " + deltaTms.toFixed().padStart(3, " ") + " ms | ΔTmax = " + deltaTmax.toFixed().padStart(3, " ") + "ms)</pre>";
+        infoPanel.innerHTML =
+            `<pre>${evt.data}</pre>` +
+            `<pre>Refresh rate = ${refreshRate.toFixed().padStart(2, " ")} Hz` +
+            ` (ΔT = ${deltaTms.toFixed().padStart(3, " ")} ms}` +
+            ` | ΔTmax = ${deltaTmax.toFixed().padStart(3, " ")} ms)</pre>`;
 
-        if (data.hasOwnProperty("dbValue")) {
+        if (data.hasOwnProperty("sound_level_dB")) {
             let maxPoints = 100;
-            Plotly.extendTraces('dbGraph', {
-                y: [[data.dbValue], [data.dbValueAveraged], [data.dbValueLowPass1], [data.dbValueLowPass2]]
-            }, [0, 1, 2, 3], maxPoints);
+            Plotly.extendTraces("dbGraph", {
+                y: [
+                    [data.sound_level_dB.raw],
+                    [data.sound_level_dB.moving_average],
+                    [data.sound_level_dB.low_pass_1],
+                    [data.sound_level_dB.low_pass_2],
+                    [data.sound_level_dB.kalman]
+                ]
+            }, [0, 1, 2, 3, 4], maxPoints);
         }
     };
 

@@ -48,16 +48,16 @@ void loop()
 
     // Read sound level.
     sm1.readSoundLevel();
-    static char jsonMsg[200];
+    static char jsonMsg[109];
     sm1.toJSON(jsonMsg);
 
     // Print to serial.
-#define serial_out 1
-#if serial_out == 0
+#define SERIAL_OUT 0
+#if SERIAL_OUT == 0
     // Do not print to serial.
-#elif serial_out == 1
+#elif SERIAL_OUT == 1
     Serial.println(jsonMsg);
-#elif serial_out == 2
+#elif SERIAL_OUT == 2
     serialPrintForPlotInArduinoPlotter();
 #endif
 

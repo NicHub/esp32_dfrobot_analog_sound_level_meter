@@ -19,8 +19,7 @@
 #pragma once
 
 #include <Arduino.h>
-
-
+#include "SimpleKalmanFilter.h"
 
 class Sound_Meter
 {
@@ -28,30 +27,29 @@ private:
     void initArrayForMovingAverage();
 
 public:
-    float max_reading_val;
+    float sound_level_raw_max_possible;
     float conv_analog_2_volt;
 
-    uint8_t sound_sensor_pin ;
-    float vref ;
+    uint8_t sound_sensor_pin;
+    float vref;
     float nb_bits;
     float conv_volt_2_db;
-    uint16_t wait_ms ;
-    uint16_t integrationTime_ms;
+    uint16_t wait_ms;
+    uint16_t integration_time_ms;
 
-
-
-    float analogReadValueMax = 0.0f;
-    float analogReadValueMin = 1E6f;
-    float analogReadValue = 0.0f;
-    float voltageValue = 0.0f;
-    float dbValue = 0.0f;
-    float analogReadValueAveraged = 0.0f;
-    float voltageValueAveraged = 0.0f;
-    float dbValueAveraged = 0.0f;
-    float dbValueLowPass1 = 0.0f;
-    float lastdbValue = 0.0f;
-    float lastdbValueLowPass1 = 0.0f;
-    float dbValueLowPass2 = 0.0f;
+    float sound_level_raw_max = 0.0f;
+    float sound_level_raw_min = 1E6f;
+    float sound_level_raw = 0.0f;
+    float sound_level_volt = 0.0f;
+    float sound_level_db = 0.0f;
+    float moving_average_raw = 0.0f;
+    float moving_average_voltage = 0.0f;
+    float moving_average_sound_level = 0.0f;
+    float sound_level_db_low_pass_1 = 0.0f;
+    float last_sound_level_db = 0.0f;
+    float last_sound_level_db_low_pass_1 = 0.0f;
+    float sound_level_db_low_pass_2 = 0.0f;
+    float sound_level_db_kalman = 0.0f;
 
     Sound_Meter();
     void setupSoundMeter(
@@ -60,12 +58,13 @@ public:
         float nb_bits = 12.0f,
         float conv_volt_2_db = 50.0f,
         uint16_t wait_ms = 100,
-        uint16_t integrationTime_ms = 500);
+        uint16_t integration_time_ms = 500);
     void readSoundLevel();
     void readSoundLevelRaw();
     void calcMinMaxSoundLevel();
     void calcMovingAverage();
     void calcLowPass1();
     void calcLowPass2();
+    void calcKalman();
     void toJSON(char *jsonMsg);
 };

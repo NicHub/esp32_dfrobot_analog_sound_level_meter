@@ -39,3 +39,5 @@ http://192.168.4.1/
 
 
 https://plot.ly/javascript/streaming/
+
+ERROR: Too many messages queued

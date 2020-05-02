@@ -59,19 +59,21 @@ void setupSerial()
  */
 void serialPrintForPlotInArduinoPlotter()
 {
-    const float offsetForArduinoPlotter = 0;
+    const float OFFSET_FOR_ARDUINO_PLOTTER = 0;
     Serial.print("yAxisLowLimit:");
     Serial.print(0);
     Serial.print(",yAxisHighLimit:");
     Serial.print(100);
-    Serial.print(",dbValue:");
-    Serial.print(sm1.dbValue, 3);
-    Serial.print(",dbValueAveraged:");
-    Serial.print(sm1.dbValueAveraged, 3);
-    Serial.print(",dbValueLowPass1:");
-    Serial.print(sm1.dbValueLowPass1 + offsetForArduinoPlotter, 3);
-    Serial.print(",dbValueLowPass2:");
-    Serial.print(sm1.dbValueLowPass2 + offsetForArduinoPlotter * 2, 3);
+    Serial.print(",sound_level_db:");
+    Serial.print(sm1.sound_level_db, 3);
+    Serial.print(",moving_average_sound_level:");
+    Serial.print(sm1.moving_average_sound_level, 3);
+    Serial.print(",sound_level_db_low_pass_1:");
+    Serial.print(sm1.sound_level_db_low_pass_1 + OFFSET_FOR_ARDUINO_PLOTTER * 1, 3);
+    Serial.print(",sound_level_db_low_pass_2:");
+    Serial.print(sm1.sound_level_db_low_pass_2 + OFFSET_FOR_ARDUINO_PLOTTER * 2, 3);
+    Serial.print(",sound_level_db_kalman:");
+    Serial.print(sm1.sound_level_db_kalman + OFFSET_FOR_ARDUINO_PLOTTER * 3, 3);
     Serial.print("\n");
 }
 
@@ -90,7 +92,7 @@ void printOLED()
     // Print.
     display.setCursor(25, 8);
     display.clearDisplay();
-    display.print(sm1.dbValueAveraged, 1);
+    display.print(sm1.moving_average_sound_level, 1);
     display.print(" dB");
     display.display();
 }
@@ -123,7 +125,7 @@ void wsPrint(char *jsonMsg)
  */
 void setupWebServer()
 {
-   // Web
+    // Web
     wsa.scanNetwork();
     wsa.setupWebServer();
 }
