@@ -59,11 +59,11 @@ function createPlot() {
     },
     {
         y: [],
-        mode: "lines",
-        opacity: 1.0,
-        marker: { color: "green", size: 4 },
+        mode: "lines+markers",
+        opacity: 0.5,
+        marker: { color: "red", size: 4 },
         name: "KALMAN FILTERED SOUND LEVEL (dB)",
-        line: { width: 1 }
+        line: { width: 16 }
     },
     ];
 
@@ -101,15 +101,10 @@ function getIP(callback) {
 }
 
 function webSocketHandle(ip) {
-    if (! "WebSocket" in window) {
-        alert("WebSocket is not supported by your browser!");
-        return;
-    }
 
     var ws = new WebSocket("ws://" + ip + "/ws", ["arduino"]);
     var T1 = +new Date();
     var deltaTmax = 0;
-
 
     ws.onmessage = function (evt) {
         var T2 = +new Date();

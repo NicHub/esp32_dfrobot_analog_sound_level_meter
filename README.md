@@ -9,7 +9,7 @@
 
 
 <p align="center">
-<img height=400px src="./images/dfrobot_analog_sound_level_meter.jpg" alt="dfrobot analog sound level meter" />
+<img height=400px src="./images/dfrobotAnalogSoundLevelMeter.jpg" alt="dfrobot analog sound level meter" />
 </p>
 
 

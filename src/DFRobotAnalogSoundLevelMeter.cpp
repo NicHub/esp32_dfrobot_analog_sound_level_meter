@@ -17,7 +17,7 @@
  */
 
 #include <Arduino.h>
-#include <dfrobot_analog_sound_level_meter.h>
+#include <DFRobotAnalogSoundLevelMeter.h>
 
 const uint16_t MOVING_AVERAGE_SIZE = 10;
 float SOUND_LEVEL_RAW[MOVING_AVERAGE_SIZE];

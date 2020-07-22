@@ -37,11 +37,11 @@ void setup()
 void loop()
 {
     // Reduce the reading rate.
-    static unsigned long targetT = 0UL;
-    unsigned long currentT = millis();
-    if (currentT < targetT)
+    static unsigned long _target_t = 0UL;
+    unsigned long _current_t = millis();
+    if (_current_t < _target_t)
         return;
-    targetT = currentT + wait_ms;
+    _target_t = _current_t + WAIT_MS;
 
     // Web.
     ArduinoOTA.handle();

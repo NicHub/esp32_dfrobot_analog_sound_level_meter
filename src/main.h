@@ -23,9 +23,9 @@
 #include <Arduino.h>
 
 // Sound meter.
-#include <dfrobot_analog_sound_level_meter.h>
+#include <DFRobotAnalogSoundLevelMeter.h>
 Sound_Meter sm1;
-const unsigned long wait_ms = 100UL;
+const unsigned long WAIT_MS = 100UL;
 #define SOUND_SENSOR_PIN 34 // This pin read the analog voltage from the sound level meter.
 
 // OLED.
