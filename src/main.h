@@ -115,9 +115,9 @@ void setupOLED()
 /**
  *
  */
-void wsPrint(char *jsonMsg)
+void wsPrint(char *json_msg)
 {
-    ws.textAll(jsonMsg);
+    ws.textAll(json_msg);
 }
 
 /**

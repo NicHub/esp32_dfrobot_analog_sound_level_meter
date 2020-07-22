@@ -66,5 +66,5 @@ public:
     void calcLowPass1();
     void calcLowPass2();
     void calcKalman();
-    void toJSON(char *jsonMsg);
+    void toJSON(char *json_msg);
 };

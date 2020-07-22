@@ -193,12 +193,12 @@ void Sound_Meter::setupSoundMeter(
 /**
  *
  */
-void Sound_Meter::toJSON(char *jsonMsg)
+void Sound_Meter::toJSON(char *json_msg)
 {
     const char *formatString =
         R"rawText({"sound_level_dB":{"raw":%.1f,"moving_average":%.1f,"low_pass_1":%.1f,"low_pass_2":%.1f,"kalman":%.1f}})rawText";
 
-    sprintf(jsonMsg,
+    sprintf(json_msg,
             formatString,
             Sound_Meter::sound_level_db,
             Sound_Meter::moving_average_sound_level,

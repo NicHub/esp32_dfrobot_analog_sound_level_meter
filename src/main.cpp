@@ -48,15 +48,15 @@ void loop()
 
     // Read sound level.
     sm1.readSoundLevel();
-    static char jsonMsg[109];
-    sm1.toJSON(jsonMsg);
+    static char json_msg[109];
+    sm1.toJSON(json_msg);
 
     // Print to serial.
 #define SERIAL_OUT 0
 #if SERIAL_OUT == 0
     // Do not print to serial.
 #elif SERIAL_OUT == 1
-    Serial.println(jsonMsg);
+    Serial.println(json_msg);
 #elif SERIAL_OUT == 2
     serialPrintForPlotInArduinoPlotter();
 #endif
@@ -65,5 +65,5 @@ void loop()
     printOLED();
 
     // Send to websocket.
-    wsPrint(jsonMsg);
+    wsPrint(json_msg);
 }
