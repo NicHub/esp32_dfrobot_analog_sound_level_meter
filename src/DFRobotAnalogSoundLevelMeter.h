@@ -42,14 +42,15 @@ public:
     float sound_level_raw = 0.0f;
     float sound_level_volt = 0.0f;
     float sound_level_db = 0.0f;
-    float moving_average_raw = 0.0f;
-    float moving_average_voltage = 0.0f;
-    float moving_average_sound_level = 0.0f;
+    float sound_level_raw_moving_average = 0.0f;
+    float sound_level_volt_moving_average = 0.0f;
+    float sound_level_db_moving_average = 0.0f;
     float sound_level_db_low_pass_1 = 0.0f;
     float last_sound_level_db = 0.0f;
     float last_sound_level_db_low_pass_1 = 0.0f;
     float sound_level_db_low_pass_2 = 0.0f;
     float sound_level_db_kalman = 0.0f;
+    float sound_level_db_vumeter_1 = 0.0f;
 
     Sound_Meter();
     void setupSoundMeter(
@@ -59,12 +60,14 @@ public:
         float conv_volt_2_db = 50.0f,
         uint16_t wait_ms = 100,
         uint16_t integration_time_ms = 500);
-    void readSoundLevel();
+    void readSoundLevel(uint8_t signal_type = 0);
     void readSoundLevelRaw();
+    void generateSquareWave(unsigned long period, float volume_min, float volume_max);
     void calcMinMaxSoundLevel();
     void calcMovingAverage();
     void calcLowPass1();
     void calcLowPass2();
     void calcKalman();
+    void calcVuMeter1();
     void toJSON(char *json_msg);
 };

@@ -1,4 +1,3 @@
-
 # E S P 3 2    —    D F R O B O T    A N A L O G    S O U N D    L E V E L    M E T E R
 
 <https://www.dfrobot.com/product-1663.html>
@@ -7,13 +6,11 @@
 
 <https://fr.aliexpress.com/item/32846247596.html?spm=a2g0s.9042311.0.0.61346c375GJr6S>
 
-
 <p align="center">
 <img height=400px src="./images/dfrobotAnalogSoundLevelMeter.jpg" alt="dfrobot analog sound level meter" />
 </p>
 
-
-# PINOUT
+## PINOUT
 
 | wire  |     signal      |
 | ----- | :-------------: |
@@ -21,23 +18,21 @@
 | red   | VCC (3.3V - 5V) |
 | black |       GND       |
 
-
-# Upload data directory to SPIFS
+## Upload data directory to SPIFS
 
 ```bash
 platformio run --target uploadfs
 ```
 
+## Plotly
 
+- <https://plot.ly/javascript/streaming/>
 
-STATION IP address:
-http://192.168.43.199/
+## Kalman Filter
 
-SOFT-AP IP address:
-http://192.168.4.1/
+https://github.com/denyssene/SimpleKalmanFilter/blob/master/src/SimpleKalmanFilter.cpp
 
+## Vu meter
 
-
-https://plot.ly/javascript/streaming/
-
-ERROR: Too many messages queued
+- <https://fr.wikipedia.org/wiki/VU-mètre>
+- <https://fr.wikipedia.org/wiki/Peak_Programme_Meter>

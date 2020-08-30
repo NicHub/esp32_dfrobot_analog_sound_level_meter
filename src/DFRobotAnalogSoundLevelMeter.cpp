@@ -21,8 +21,15 @@
 
 const uint16_t MOVING_AVERAGE_SIZE = 10;
 float SOUND_LEVEL_RAW[MOVING_AVERAGE_SIZE];
-uint8_t CNT = 0;
-SimpleKalmanFilter SIMPLE_KALMAN_FILTER(2, 2, 0.1);
+
+// Kalman parameters.
+// sk_e_mea: Measurement Uncertainty - How much do we expect to our measurement vary
+// sk_e_est: Estimation Uncertainty - Can be initilized with the same value as e_mea since the kalman filter will adjust its value.
+// sk_q: Process Variance - usually a small number between 0.001 and 1 - how fast your measurement moves. Recommended 0.01. Should be tunned to your needs.
+#define sk_e_mea 10.0F
+#define sk_e_est sk_e_mea
+#define sk_q 0.02F
+SimpleKalmanFilter SIMPLE_KALMAN_FILTER(sk_e_mea, sk_e_est, sk_q);
 
 /**
  *
@@ -70,23 +77,28 @@ void Sound_Meter::calcMinMaxSoundLevel()
  */
 void Sound_Meter::calcMovingAverage()
 {
+    static uint8_t cnt = 0;
+
     // Reset moving average in case of big difference.
     if (abs(Sound_Meter::last_sound_level_db - Sound_Meter::sound_level_db) > 10)
         initArrayForMovingAverage();
 
     // Calculate moving average;
-    SOUND_LEVEL_RAW[CNT] = Sound_Meter::sound_level_raw;
+    SOUND_LEVEL_RAW[cnt] = Sound_Meter::sound_level_raw;
     float sum = 0;
     for (size_t _i = 0; _i < MOVING_AVERAGE_SIZE; _i++)
-    {
         sum += SOUND_LEVEL_RAW[_i];
-    }
-    Sound_Meter::moving_average_raw = sum / MOVING_AVERAGE_SIZE;
-    Sound_Meter::moving_average_voltage = Sound_Meter::moving_average_raw * Sound_Meter::conv_analog_2_volt;
-    Sound_Meter::moving_average_sound_level = Sound_Meter::moving_average_voltage * Sound_Meter::conv_volt_2_db;
-    CNT++;
-    if (CNT == MOVING_AVERAGE_SIZE)
-        CNT = 0;
+
+    Sound_Meter::sound_level_raw_moving_average =
+        sum / MOVING_AVERAGE_SIZE;
+    Sound_Meter::sound_level_volt_moving_average =
+        Sound_Meter::sound_level_raw_moving_average * Sound_Meter::conv_analog_2_volt;
+    Sound_Meter::sound_level_db_moving_average =
+        Sound_Meter::sound_level_volt_moving_average * Sound_Meter::conv_volt_2_db;
+
+    cnt++;
+    if (cnt == MOVING_AVERAGE_SIZE)
+        cnt = 0;
 }
 
 /**
@@ -130,14 +142,69 @@ void Sound_Meter::calcKalman()
 /**
  *
  */
-void Sound_Meter::readSoundLevel()
+void Sound_Meter::calcVuMeter1()
 {
-    Sound_Meter::readSoundLevelRaw();
+    // Source: https://dsp.stackexchange.com/a/49173
+
+    const float charge_speed = 0.05; // Must be within 0 and 1.
+    const float discharge_speed = 0.01; // Must be within 0 and 1.
+
+    if (Sound_Meter::sound_level_db > Sound_Meter::sound_level_db_vumeter_1)
+    {
+        // Charge.
+        Sound_Meter::sound_level_db_vumeter_1 =
+            Sound_Meter::sound_level_db_vumeter_1 * (1 - charge_speed) + Sound_Meter::sound_level_db * charge_speed;
+    }
+    else
+    {
+        // Discharge.
+        Sound_Meter::sound_level_db_vumeter_1 =
+            Sound_Meter::sound_level_db_vumeter_1 * (1 - discharge_speed);
+    }
+}
+
+/**
+ *
+ */
+void Sound_Meter::readSoundLevel(uint8_t signal_type)
+{
+    if (signal_type == 0)
+        Sound_Meter::readSoundLevelRaw();
+    else if (signal_type == 1)
+        Sound_Meter::generateSquareWave(2000UL, 10.0F, 60.0F);
     Sound_Meter::calcMinMaxSoundLevel();
     Sound_Meter::calcMovingAverage();
     Sound_Meter::calcLowPass1();
     Sound_Meter::calcLowPass2();
     Sound_Meter::calcKalman();
+    Sound_Meter::calcVuMeter1();
+}
+
+/**
+ *
+ */
+void Sound_Meter::generateSquareWave(unsigned long period, float volume_min, float volume_max)
+{
+    static float current_volume = volume_min;
+    static boolean is_min = true;
+    static unsigned long _target_t = millis() + period;
+    unsigned long _current_t = millis();
+    if (_current_t < _target_t)
+        return;
+    _target_t = _current_t + period;
+
+    if (is_min)
+    {
+        current_volume = volume_max;
+        is_min = false;
+    }
+    else
+    {
+        current_volume = volume_min;
+        is_min = true;
+    }
+
+    Sound_Meter::sound_level_db = current_volume;
 }
 
 /**
@@ -196,13 +263,14 @@ void Sound_Meter::setupSoundMeter(
 void Sound_Meter::toJSON(char *json_msg)
 {
     const char *formatString =
-        R"rawText({"sound_level_dB":{"raw":%.1f,"moving_average":%.1f,"low_pass_1":%.1f,"low_pass_2":%.1f,"kalman":%.1f}})rawText";
+        R"rawText({"sound_level_dB":{"raw":%.1f,"moving_average":%.1f,"low_pass_1":%.1f,"low_pass_2":%.1f,"kalman":%.1f,"vumeter_1":%.1f}})rawText";
 
     sprintf(json_msg,
             formatString,
             Sound_Meter::sound_level_db,
-            Sound_Meter::moving_average_sound_level,
+            Sound_Meter::sound_level_db_moving_average,
             Sound_Meter::sound_level_db_low_pass_1,
             Sound_Meter::sound_level_db_low_pass_2,
-            Sound_Meter::sound_level_db_kalman);
+            Sound_Meter::sound_level_db_kalman,
+            Sound_Meter::sound_level_db_vumeter_1);
 }

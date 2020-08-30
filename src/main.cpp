@@ -47,8 +47,8 @@ void loop()
     ArduinoOTA.handle();
 
     // Read sound level.
-    sm1.readSoundLevel();
-    static char json_msg[109];
+    sm1.readSoundLevel(0);
+    static char json_msg[129];
     sm1.toJSON(json_msg);
 
     // Print to serial.
@@ -62,7 +62,8 @@ void loop()
 #endif
 
     // Print to OLED.
-    printOLED();
+    // printOLEDNumericalValue();
+    printOLEDVuMeter();
 
     // Send to websocket.
     wsPrint(json_msg);

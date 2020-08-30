@@ -66,8 +66,8 @@ void serialPrintForPlotInArduinoPlotter()
     Serial.print(100);
     Serial.print(",sound_level_db:");
     Serial.print(sm1.sound_level_db, 3);
-    Serial.print(",moving_average_sound_level:");
-    Serial.print(sm1.moving_average_sound_level, 3);
+    Serial.print(",sound_level_db_moving_average:");
+    Serial.print(sm1.sound_level_db_moving_average, 3);
     Serial.print(",sound_level_db_low_pass_1:");
     Serial.print(sm1.sound_level_db_low_pass_1 + OFFSET_FOR_ARDUINO_PLOTTER * 1, 3);
     Serial.print(",sound_level_db_low_pass_2:");
@@ -80,7 +80,7 @@ void serialPrintForPlotInArduinoPlotter()
 /**
  *
  */
-void printOLED()
+void printOLEDNumericalValue()
 {
     // Reduce the printing rate.
     static unsigned long targetT = 0UL;
@@ -92,8 +92,34 @@ void printOLED()
     // Print.
     display.setCursor(25, 8);
     display.clearDisplay();
-    display.print(sm1.moving_average_sound_level, 1);
+    display.print(sm1.sound_level_db_kalman, 1);
     display.print(" dB");
+    display.display();
+}
+
+/**
+ *
+ */
+void printOLEDVuMeter()
+{
+    // Reduce the printing rate.
+    static unsigned long targetT = 0UL;
+    unsigned long currentT = millis();
+    if (currentT < targetT)
+        return;
+    targetT = currentT + 500UL;
+
+    // Print.
+    display.setCursor(25, 8);
+    display.clearDisplay();
+    display.print(sm1.sound_level_db_kalman, 1);
+    display.print(" dB");
+    display.display();
+    display.fillRect(0,
+                     display.height() * (1 - sm1.sound_level_db_kalman / 100),
+                     10,
+                     display.height(),
+                     SSD1306_INVERSE);
     display.display();
 }
 

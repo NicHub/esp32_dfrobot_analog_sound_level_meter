@@ -38,7 +38,7 @@ function createPlot() {
         mode: "lines+markers",
         opacity: 0.5,
         marker: { color: "mediumseagreen", size: 8 },
-        name: "AVERAGED SOUND LEVEL (dB)",
+        name: "MOVING AVERAGE FILTERED SOUND LEVEL (dB)",
         line: { width: 4 }
     },
     {
@@ -46,7 +46,7 @@ function createPlot() {
         mode: "lines",
         opacity: 1.0,
         marker: { color: "dodgerblue", size: 4 },
-        name: "LOW PASS 1 SOUND LEVEL (dB)",
+        name: "LOW PASS 1 FILTERED SOUND LEVEL (dB)",
         line: { width: 1 }
     },
     {
@@ -54,7 +54,7 @@ function createPlot() {
         mode: "lines",
         opacity: 1.0,
         marker: { color: "black", size: 4 },
-        name: "LOW PASS 2 SOUND LEVEL (dB)",
+        name: "LOW PASS 2 FILTERED SOUND LEVEL (dB)",
         line: { width: 1 }
     },
     {
@@ -64,6 +64,14 @@ function createPlot() {
         marker: { color: "red", size: 4 },
         name: "KALMAN FILTERED SOUND LEVEL (dB)",
         line: { width: 16 }
+    },
+    {
+        y: [],
+        mode: "lines+markers",
+        opacity: 0.5,
+        marker: { color: "blue", size: 2 },
+        name: "VU METER 1 FILTERED SOUND LEVEL (dB)",
+        line: { width: 8 }
     },
     ];
 
@@ -128,9 +136,10 @@ function webSocketHandle(ip) {
                     [data.sound_level_dB.moving_average],
                     [data.sound_level_dB.low_pass_1],
                     [data.sound_level_dB.low_pass_2],
-                    [data.sound_level_dB.kalman]
+                    [data.sound_level_dB.kalman],
+                    [data.sound_level_dB.vumeter_1]
                 ]
-            }, [0, 1, 2, 3, 4], maxPoints);
+            }, [0, 1, 2, 3, 4, 5], maxPoints);
         }
     };
 
