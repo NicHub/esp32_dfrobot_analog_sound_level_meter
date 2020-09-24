@@ -26,7 +26,7 @@ float SOUND_LEVEL_RAW[MOVING_AVERAGE_SIZE];
 // sk_e_mea: Measurement Uncertainty - How much do we expect to our measurement vary
 // sk_e_est: Estimation Uncertainty - Can be initilized with the same value as e_mea since the kalman filter will adjust its value.
 // sk_q: Process Variance - usually a small number between 0.001 and 1 - how fast your measurement moves. Recommended 0.01. Should be tunned to your needs.
-#define sk_e_mea 10.0F
+#define sk_e_mea 1.0F
 #define sk_e_est sk_e_mea
 #define sk_q 0.02F
 SimpleKalmanFilter SIMPLE_KALMAN_FILTER(sk_e_mea, sk_e_est, sk_q);
