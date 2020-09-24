@@ -7,7 +7,8 @@
 <https://fr.aliexpress.com/item/32846247596.html?spm=a2g0s.9042311.0.0.61346c375GJr6S>
 
 <p align="center">
-<img height=400px src="./images/dfrobotAnalogSoundLevelMeter.jpg" alt="dfrobot analog sound level meter" />
+<img height=400px src="https://raw.githubusercontent.com/NicHub/esp32_dfrobot_analog_sound_level_meter/master/images/dfrobot_analog_sound_level_meter.jpg" alt="dfrobot analog sound level meter board" />
+<img height=400px src="https://raw.githubusercontent.com/NicHub/esp32_dfrobot_analog_sound_level_meter/master/images/esp32_dfrobot_analog_sound_level_meter_plots.jpg" alt="dfrobot analog sound level meter plots" />
 </p>
 
 ## PINOUT
