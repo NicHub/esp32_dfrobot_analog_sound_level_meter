@@ -598,3 +598,52 @@ void WebServerApp::scanNetwork()
     }
     Serial.println("");
 }
+
+/**
+ *
+ */
+const char *WebServerApp::get_ssid()
+{
+    return ssid;
+}
+
+/**
+ *
+ */
+const char *WebServerApp::get_password()
+{
+    return password;
+}
+
+/**
+ *
+ */
+char *WebServerApp::get_ap_ssid()
+{
+    return apssid;
+}
+
+/**
+ *
+ */
+const char *WebServerApp::get_ap_password()
+{
+    return ap_password;
+}
+
+/**
+ *
+ */
+IPAddress WebServerApp::get_station_ip()
+{
+
+    return WiFi.localIP();
+}
+
+/**
+ *
+ */
+IPAddress WebServerApp::get_soft_ap_ip()
+{
+    return WiFi.softAPIP();
+}

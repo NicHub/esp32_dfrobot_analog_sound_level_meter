@@ -110,6 +110,7 @@ void printOLEDVuMeter()
     targetT = currentT + 500UL;
 
     // Print.
+    display.setTextSize(2);
     display.setCursor(25, 8);
     display.clearDisplay();
     display.print(sm1.sound_level_db_kalman, 1);
@@ -149,9 +150,47 @@ void wsPrint(char *json_msg)
 /**
  *
  */
+void printOLED_IPs()
+{
+    // Reduce the printing rate.
+    static unsigned long targetT = 0UL;
+    unsigned long currentT = millis();
+    if (currentT < targetT)
+        return;
+    targetT = currentT + 500UL;
+
+    // OLED setup.
+    display.clearDisplay();
+    display.setTextSize(1);
+
+    // Print station IP.
+    display.setCursor(5, 0);
+    display.print("STATION IP");
+    display.setCursor(15, 8);
+    display.print(wsa.get_station_ip());
+
+    // Print soft IP.
+    display.setCursor(5, 16);
+    display.print("SOFT AP IP");
+    display.setCursor(15, 24);
+    display.print(wsa.get_soft_ap_ip());
+
+    // Print OLED.
+    display.display();
+    delay(5000);
+}
+
+/**
+ *
+ */
 void setupWebServer()
 {
     // Web
     wsa.scanNetwork();
     wsa.setupWebServer();
+    Serial.print("STATION SSID:\n");
+    Serial.println(wsa.get_ssid());
+    Serial.print("SOFT AP SSID:\n");
+    Serial.println(wsa.get_ap_ssid());
+    printOLED_IPs();
 }

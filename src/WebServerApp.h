@@ -35,13 +35,19 @@ class WebServerApp
 {
 public:
     static void onWsEvent(AsyncWebSocket *server,
-                   AsyncWebSocketClient *client,
-                   AwsEventType type,
-                   void *arg,
-                   uint8_t *data,
-                   size_t len);
+                          AsyncWebSocketClient *client,
+                          AwsEventType type,
+                          void *arg,
+                          uint8_t *data,
+                          size_t len);
     void writeServerInfoToFile();
     void setupWebServer();
     void inverseBubbleSortIndexes(int inputArray[], int indexes[], int arraySize);
     void scanNetwork();
+    const char *get_ssid();
+    const char *get_password();
+    char *get_ap_ssid();
+    const char *get_ap_password();
+    IPAddress get_station_ip();
+    IPAddress get_soft_ap_ip();
 };

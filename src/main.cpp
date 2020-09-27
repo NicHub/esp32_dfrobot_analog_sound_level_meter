@@ -26,8 +26,8 @@
 void setup()
 {
     setupSerial();
-    sm1.setupSoundMeter(SOUND_SENSOR_PIN);
     setupOLED();
+    sm1.setupSoundMeter(SOUND_SENSOR_PIN);
     setupWebServer();
 }
 
