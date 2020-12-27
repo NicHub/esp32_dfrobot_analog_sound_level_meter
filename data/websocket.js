@@ -1,20 +1,24 @@
-"use strict"
-var scene;
-var camera;
-var renderer;
-var axis3d;
-var scene3dcontainer = document.getElementById("scene3dcontainer");
-var infoPanel = document.getElementById("infoPanel");
+"use strict";
 
-{
+const infoPanel = document.getElementById("infoPanel");
+init();
+
+/**
+ *
+ */
+function init() {
     console.log("### START ###");
     getIP(webSocketHandle);
-    createPlot();
+    createPlotPlotly();
 }
 
-function createPlot() {
+/**
+ * See https://plotly.com/javascript/
+ */
+function createPlotPlotly() {
 
-    var layout = {
+    const layout = {
+        title: "SOUND METER",
         yaxis: {
             range: [0, 100],
             tickmode: "linear",
@@ -23,9 +27,9 @@ function createPlot() {
         }
     };
 
-    var config = { responsive: true };
+    const config = { responsive: true };
 
-    var traces = [{
+    const traces = [{
         y: [],
         mode: "lines+markers",
         opacity: 0.5,
@@ -78,6 +82,9 @@ function createPlot() {
     Plotly.newPlot("dbGraph", traces, layout, config);
 }
 
+/**
+ *
+ */
 function getIP(callback) {
     // Check if the HTML file is served from the ESP
     // or from a development server. This is done by
@@ -85,13 +92,13 @@ function getIP(callback) {
     // the server. If it is present, then we are on
     // the ESP. If we are on a development server, the
     // IP address of the ESP must be set manually below.
-    var file_url = location.origin + "/info.json";
-    var xhr = new XMLHttpRequest();
+    const file_url = location.origin + "/info.json";
+    const xhr = new XMLHttpRequest();
     xhr.open("GET", file_url, true);
     xhr.send();
     xhr.onload = function () {
-        var ip;
-        var ans = xhr.status;
+        let ip;
+        const ans = xhr.status;
         if (ans === 200) {
             // We are on the ESP.
             ip = location.hostname;
@@ -100,32 +107,35 @@ function getIP(callback) {
         else {
             // We are on the development server.
             // Manually set ESP IP address.
-            ip = "192.168.88.253";
-            document.title = "DEV[" + ans + "]—" + document.title;
+            ip = "192.168.1.249";
+            document.title = "DEV " + document.title;
         }
         console.log("ip = " + ip);
         callback(ip);
     }
 }
 
+/**
+ *
+ */
 function webSocketHandle(ip) {
 
-    var ws = new WebSocket("ws://" + ip + "/ws", ["arduino"]);
-    var T1 = +new Date();
-    var deltaTmax = 0;
+    const ws = new WebSocket("ws://" + ip + "/ws", ["arduino"]);
+    let T1 = +new Date();
+    let deltaTmax = 0;
 
     ws.onmessage = function (evt) {
-        var T2 = +new Date();
-        var deltaTms = T2 - T1;
+        const T2 = +new Date();
+        const deltaTms = T2 - T1;
         deltaTmax = (deltaTms > deltaTmax) ? deltaTms : deltaTmax;
         var refreshRate = 1000 / deltaTms;
         T1 = T2;
 
-        var data = JSON.parse(evt.data);
+        const data = JSON.parse(evt.data);
         infoPanel.innerHTML =
             `<pre>${evt.data}</pre>` +
             `<pre>Refresh rate = ${refreshRate.toFixed().padStart(2, " ")} Hz` +
-            ` (ΔT = ${deltaTms.toFixed().padStart(3, " ")} ms}` +
+            ` (ΔT = ${deltaTms.toFixed().padStart(3, " ")} ms` +
             ` | ΔTmax = ${deltaTmax.toFixed().padStart(3, " ")} ms)</pre>`;
 
         if (data.hasOwnProperty("sound_level_dB")) {
