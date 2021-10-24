@@ -7,16 +7,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>• SOUND METER •</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
 <body>
     <img src="./logo.png" alt="logo" />
     <h1>SOUND METER<br />ON ESP32</h1>
-    <p><a href="./scan">WiFi Network Scanner</a></p>
-    <p><a href="./heap">Heap</a></p>
-    <p><a href="./info.json">info.json</a></p>
-    <p><a href="./plotly.html">Plotly</a></p>
+    <div class="infoPanel" id="infoPanel"></div>
+    <div class="graph" id="dbGraph"></div>
     <p><small>ouilogique.com</small></p>
+
+    <script src="websocket.js"></script>
 </body>
 
 </html>

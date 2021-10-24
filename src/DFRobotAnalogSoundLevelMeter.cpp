@@ -246,8 +246,8 @@ void Sound_Meter::setupSoundMeter(
     // Analog setup.
     analogReadResolution(nb_bits);                       // Resolution of analogRead return values. Range: 9 - 12. Default: 12 bits (0-4095).
     analogSetWidth(nb_bits);                             // Sets the sample bits and read resolution. Range: 9 - 12. Default: 12 bits (0-4095).
-    analogSetCycles(8);                                  // Set number of cycles per sample. Range: 1 - 255. Default: 8.
-    analogSetSamples(1);                                 // Set number of samples in the range. Range: 1 - 255. Default: 1.
+    // analogSetCycles(8);                                  // Set number of cycles per sample. Range: 1 - 255. Default: 8.
+    // analogSetSamples(1);                                 // Set number of samples in the range. Range: 1 - 255. Default: 1.
     analogSetClockDiv(1);                                // Set the divider for the ADC clock. Range: 1 - 255. Default. 1.
     analogSetAttenuation(ADC_11db);                      // Set the attenuation for all channels. Can be ADC_0db, ADC_2_5db, ADC_6db, ADC_11db. Default: ADC_11db.
     analogSetPinAttenuation(sound_sensor_pin, ADC_11db); // Set the attenuation for particular pin.
