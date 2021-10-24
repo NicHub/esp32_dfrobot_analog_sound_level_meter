@@ -7,7 +7,10 @@
 <https://fr.aliexpress.com/item/32846247596.html?spm=a2g0s.9042311.0.0.61346c375GJr6S>
 
 <p align="center">
-<img width=600px src="https://raw.githubusercontent.com/NicHub/esp32_dfrobot_analog_sound_level_meter/master/images/dfrobot_analog_sound_level_meter.jpg" alt="dfrobot analog sound level meter board" />
+<img width=600px src="https://raw.githubusercontent.com/NicHub/esp32_dfrobot_analog_sound_level_meter/master/images/dfrobot_analog_sound_level_meter_001.jpg" alt="dfrobot analog sound level meter board" />
+</p>
+<p align="center">
+<img width=600px src="https://raw.githubusercontent.com/NicHub/esp32_dfrobot_analog_sound_level_meter/master/images/dfrobot_analog_sound_level_meter_002.jpg" alt="dfrobot analog sound level meter board" />
 </p>
 <p align="center">
 <img width=600px src="https://raw.githubusercontent.com/NicHub/esp32_dfrobot_analog_sound_level_meter/master/images/esp32_dfrobot_analog_sound_level_meter_plots.jpg" alt="dfrobot analog sound level meter plots" />
@@ -15,11 +18,11 @@
 
 ## PINOUT
 
-| wire  |     signal      |
-| ----- | :-------------: |
-| green |  Analog output  |
-| red   | VCC (3.3V - 5V) |
-| black |       GND       |
+| wire  |       signal       |
+| ----- | :----------------: |
+| blue  | Analog output IO34 |
+| red   |  VCC (3.3V - 5V)   |
+| black |        GND         |
 
 ## Upload data directory to SPIFS
 
