@@ -48,9 +48,31 @@ AsyncEventSource events("/events");
 /**
  *
  */
+void printCompilationDateAndTime()
+{
+    Serial.println(F("\n\n\n# VL53L4CD TIME OF FLIGHT\n"));
+    Serial.print(F("FILE NAME:        "));
+    Serial.println(__FILE__);
+    Serial.print(F("PIO PROJECT PATH: "));
+    Serial.println(PIO_PROJECT_PATH);
+    Serial.print(F("COMPILATION DATE: "));
+    Serial.println(COMPILATION_DATE);
+    Serial.print(F("COMPILATION TIME: "));
+    Serial.println(COMPILATION_TIME);
+    Serial.print(F("PYTHON VERSION:   "));
+    Serial.println(PYTHON_VERSION);
+    Serial.print(F("PYTHON PATH:      "));
+    Serial.println(PYTHON_PATH);
+    Serial.println("");
+}
+
+/**
+ *
+ */
 void setupSerial()
 {
     Serial.begin(BAUD_RATE);
+    printCompilationDateAndTime();
     Serial.flush();
 }
 
@@ -185,7 +207,7 @@ void printOLED_IPs()
  */
 void setupWebServer()
 {
-    // Web
+    // Web.
     wsa.scanNetwork();
     wsa.setupWebServer();
     Serial.print("STATION SSID:\n");
