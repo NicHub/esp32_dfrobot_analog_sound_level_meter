@@ -1,7 +1,12 @@
 "use strict";
 
 const infoPanel = document.getElementById("infoPanel");
-const ip_of_esp_set_manually = "192.168.1.249";
+const ip_of_esp_set_manually = [
+    "192.168.1.249",
+    "192.168.70.85",
+    "192.168.70.93",
+][1];
+
 init();
 
 /**
@@ -9,12 +14,8 @@ init();
  */
 async function init() {
     console.log("### START ###");
-
-    let IP = await get_IP_of_ESP();
-    console.log(IP);
-
-    // getIP(webSocketHandle);
-    // createPlotPlotly();
+    get_IP_of_ESP(webSocketHandle);
+    createPlotPlotly();
 }
 
 /**
@@ -90,40 +91,34 @@ function createPlotPlotly() {
 /**
  *
  */
-async function get_IP_of_ESP() {
-    /*
-    Get the IP of the ESP.
-
-    There are two possible cases:
-
-    1. The web server used is the one on the ESP:
-       In this case, we can know the ESP IP address
-       by reading `location.hostname`.
-
-    2. The files are served from another web server:
-       In this case we cannot know the ESP IP address,
-       the user has to enter it manually.
-
-    If the file `info.json` can be found, then we are on the ESP,
-    otherwise, we are on another server.
-    */
-    const file_url = `${location.origin}/info.json`;
-
-    let response = await fetch(file_url);
-    let ip_of_esp;
-    if (response.status === 200) {
-        // We are on the ESP.
-        ip_of_esp = location.hostname;
-        document.title = "ESP32—" + document.title;
+function get_IP_of_ESP(callback) {
+    // Check if the HTML file is served from the ESP
+    // or from a development server. This is done by
+    // checking if the file `info.json` is present on
+    // the server. If it is present, then we are on
+    // the ESP. If we are on a development server, the
+    // IP address of the ESP must be set manually below.
+    const file_url = location.origin + "/info.json";
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", file_url, true);
+    xhr.send();
+    xhr.onload = function () {
+        let ip;
+        const ans = xhr.status;
+        if (ans === 200) {
+            // We are on the ESP.
+            ip = location.hostname;
+            document.title = "ESP32—" + document.title;
+        }
+        else {
+            // We are on the development server.
+            // Manually set ESP IP address.
+            ip = ip_of_esp_set_manually;
+            document.title = "DEV[" + ans + "]—" + document.title;
+        }
+        console.log("ip = " + ip);
+        callback(ip);
     }
-    else {
-        // We are on the development server.
-        // Manually set ESP IP address.
-        ip_of_esp = ip_of_esp_set_manually;
-        document.title = "DEV " + document.title;
-    }
-
-    return ip_of_esp;
 }
 
 /**

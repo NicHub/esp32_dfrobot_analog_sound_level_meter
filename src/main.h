@@ -26,7 +26,7 @@
 #include <DFRobotAnalogSoundLevelMeter.h>
 Sound_Meter sm1;
 const unsigned long WAIT_MS = 100UL;
-#define SOUND_SENSOR_PIN 34 // This pin read the analog voltage from the sound level meter.
+#define SOUND_SENSOR_PIN GPIO_NUM_36 // This pin read the analog voltage from the sound level meter.
 
 // OLED.
 #include <SPI.h>
