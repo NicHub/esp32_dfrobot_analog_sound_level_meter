@@ -50,7 +50,7 @@ AsyncEventSource events("/events");
  */
 void printCompilationDateAndTime()
 {
-    Serial.println(F("\n\n\n# VL53L4CD TIME OF FLIGHT\n"));
+    Serial.println(F("\n\n\n# DFROBOT ANALOG SOUND LEVEL METER ON ESP32\n"));
     Serial.print(F("FILE NAME:        "));
     Serial.println(__FILE__);
     Serial.print(F("PIO PROJECT PATH: "));
@@ -59,10 +59,6 @@ void printCompilationDateAndTime()
     Serial.println(COMPILATION_DATE);
     Serial.print(F("COMPILATION TIME: "));
     Serial.println(COMPILATION_TIME);
-    Serial.print(F("PYTHON VERSION:   "));
-    Serial.println(PYTHON_VERSION);
-    Serial.print(F("PYTHON PATH:      "));
-    Serial.println(PYTHON_PATH);
     Serial.println("");
 }
 
