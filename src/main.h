@@ -175,7 +175,7 @@ void printOLED_IPs()
     unsigned long currentT = millis();
     if (currentT < targetT)
         return;
-    targetT = currentT + 500UL;
+    targetT = currentT + 2000UL;
 
     // OLED setup.
     display.clearDisplay();
